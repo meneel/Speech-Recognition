@@ -5,9 +5,10 @@ import os
 from pyowm import OWM
 from pyowm.utils import config
 from pyowm.utils import timestamps
+import webbrowser as wb
+
 
 r = sr.Recognizer()
-
 with sr.Microphone() as source:
     print('Speak Anything: ')
     audio = r.listen(source)
@@ -48,6 +49,26 @@ def name():
     name = "Indraneel Dutta"
     return (name)
 
+def search():
+    url='https://www.google.com/search?q='
+    r1 = sr.Recognizer()
+    with sr.Microphone() as source:
+        print('what do you want to search: ')
+        audio = r1.listen(source)
+
+        try:
+
+            text1 = r1.recognize_google(audio)
+        except:
+            print('sorry could not recognize your voice')
+
+    try:
+        print(text1)
+        wb.get().open_new(url + text1)
+    except sr.UnknownValueError:
+        print('error')
+    except sr.RequestError as e:
+        print('failed'.format(e))
 
 if 'day' in text:
     Speak(tellDay())
@@ -56,7 +77,9 @@ if 'day' in text:
 elif 'date' in text:
     tellDate()
 
-if 'name' in text:
+elif 'name' in text:
     Speak(name())
     print(name())
 
+elif 'search' in text:
+    search()
