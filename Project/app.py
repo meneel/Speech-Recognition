@@ -1,5 +1,10 @@
 import speech_recognition as sr
+import numpy as np
+import wave
+import wavio
+from scipy.io import wavfile
 from flask import logging, Flask, render_template, request, flash
+from Speech import *
 
 
 app = Flask(__name__)
@@ -17,18 +22,29 @@ def audio_to_text():
 
 @app.route('/audio', methods=['POST'])
 def audio():
-    r = sr.Recognizer()
-    with open('upload/audio.wav', 'wb') as f:
-        f.write(request.data)
   
-    with sr.WavFile('upload/audio.wav') as source:
-        audio_data = r.record(source)
+    r = sr.Recognizer()
+    with sr.Microphone() as source:
+        # r.adjust_for_ambient_noise(source)
+        audio_data = r.listen(source)
         text = r.recognize_google(audio_data, language='en-IN', show_all=True)
-        print(text)
+        a=text['alternative']
+        b=a[0]["transcript"]
         return_text = " Did you say : <br> "
+        return_text += str(b) + " <br> "
         try:
-            for num, texts in enumerate(text['alternative']):
-                return_text += str(num+1) +") " + texts['transcript']  + " <br> "
+            if 'day' in b:
+                return_text += "Response: "+ str(tellDay())  + " <br> "
+
+            elif 'date' in b:
+                return_text += "Response: "+ str(tellDate())  + " <br> "
+                
+            elif 'name' in b:
+                return_text += "Response: "+ str(name())  + " <br> "
+
+            elif 'search' in text:
+                return_text += str(search(b))  + " <br> "
+                
         except:
             return_text = " Sorry!!!! Voice not Detected "
         

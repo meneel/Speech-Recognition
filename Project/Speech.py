@@ -1,31 +1,26 @@
 import speech_recognition as sr
 import datetime
-from gtts import gTTS
-import os
-from pyowm import OWM
-from pyowm.utils import config
-from pyowm.utils import timestamps
 import webbrowser as wb
 
 
-r = sr.Recognizer()
-with sr.Microphone() as source:
-    print('Speak Anything: ')
-    audio = r.listen(source)
+# r = sr.Recognizer()
+# with sr.Microphone() as source:
+#     print('Speak Anything: ')
+#     audio = r.listen(source)
 
-    try:
+#     try:
 
-        text = r.recognize_google(audio)
-        print('You said : {}'.format(text))
-    except:
-        print('sorry could not recognize your voice')
+#         text = r.recognize_google(audio)
+#         print('You said : {}'.format(text))
+#     except:
+#         print('sorry could not recognize your voice')
 
 
-def Speak(mytext):
-    language = 'en'
-    myobj = gTTS(text=mytext, lang=language, slow=False)
-    myobj.save("welcome.mp3")
-    os.system("welcome.mp3")
+# def Speak(mytext):
+#     language = 'en'
+#     myobj = gTTS(text=mytext, lang=language, slow=False)
+#     myobj.save("welcome.mp3")
+#     os.system("welcome.mp3")
 
 
 
@@ -49,37 +44,35 @@ def name():
     name = "Indraneel Dutta"
     return (name)
 
-def search():
+def search(b):
     url='https://www.google.com/search?q='
-    r1 = sr.Recognizer()
-    with sr.Microphone() as source:
-        print('what do you want to search: ')
-        audio = r1.listen(source)
+    # r1 = sr.Recognizer()
+    # with sr.Microphone() as source:
+    #     query='what do you want to search: '
+    #     audio = r1.listen(source)
 
-        try:
+    #     try:
+    #         text1 = r1.recognize_google(audio, language='en-IN', show_all=True)
+    #         a=text1['alternative']
+    #         b=a[0]["transcript"]
+    #     except:
+    #         query+='sorry could not recognize your voice'
 
-            text1 = r1.recognize_google(audio)
-        except:
-            print('sorry could not recognize your voice')
 
-    try:
-        print(text1)
-        wb.get().open_new(url + text1)
-    except sr.UnknownValueError:
-        print('error')
-    except sr.RequestError as e:
-        print('failed'.format(e))
+    query=b
+    wb.get().open_new(url + str(b))
+    return str(query)
 
-if 'day' in text:
-    Speak(tellDay())
-    print(tellDay())
+# if 'day' in text:
+#     Speak(tellDay())
+#     print(tellDay())
 
-elif 'date' in text:
-    tellDate()
+# elif 'date' in text:
+#     tellDate()
 
-elif 'name' in text:
-    Speak(name())
-    print(name())
+# elif 'name' in text:
+#     Speak(name())
+#     print(name())
 
-elif 'search' in text:
-    search()
+# elif 'search' in text:
+#     search()
